@@ -30,8 +30,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   }
 
   #validate_endpoint(endpoint)
-  query_list <- NULL
-  query_list$id <- openweather_args$id
+  query_list <- list(...)
+  #query_list$id <- openweather_args$id
   query_list$APPID <- Sys.getenv("OPENWEATHER_API_KEY")
 
   resp <- httr::GET(
@@ -60,7 +60,3 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   return(resp)
  }
 }
-
-
-
-

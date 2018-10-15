@@ -22,7 +22,7 @@ The goal of OpenWeatherPull is to pull data from open weather map
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example, eval=FALSE}
 devtools::install_github("alexhallam/OpenWeatherPull")
 openweather_set_key("my_api_key")
 weather_data <- openweather(id = "4160983")

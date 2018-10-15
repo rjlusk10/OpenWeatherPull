@@ -50,7 +50,7 @@ openweather_series_observations <- function(id = NULL,
  #   realtime_start,
  #   realtime_end
  # )
-
+  openweather_args <- NULL
   openweather_args <- list(
     id = id
   )
