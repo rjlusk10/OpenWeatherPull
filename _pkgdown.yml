@@ -1,0 +1,13 @@
+url: http://alexhallam.github.io/OpenWeatherPull/
+
+reference:
+- title: Authentication
+  desc: ~
+  contents:
+  - '`openweather_set_key`'
+- title: Series
+  desc: ~
+  contents:
+  - starts_with("openweather")
+authors:
+  Alex Hallam:

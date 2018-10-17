@@ -2,6 +2,9 @@
 output:
   md_document:
     variant: markdown_github
+Authors@R: c(
+    person("Alex", "Hallam", "alexhallam6.28@gmail.com", role = c("aut", "cre")
+    )
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
