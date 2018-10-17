@@ -52,8 +52,7 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   if (to_frame) {
   parsed <- jsonlite::fromJSON(httr::content(resp, "text"))
   frame <- tibble::as_tibble()
-  frame <- cbind(list(date_time = c(parsed$list$dt_txt)),parsed$list$main,parsed$list$clouds,parsed$list$wind,parsed$list$rain,purrr::flatten(parsed$city),pull_key = Sys.Date())
-
+  frame <- cbind(list(date_time = lubridate::ymd_hms(c(parsed$list$dt_txt))),parsed$list$main,parsed$list$clouds,parsed$list$wind,parsed$list$rain,purrr::flatten(parsed$city),pull_key = Sys.Date())
   return(frame)
 
   }else{

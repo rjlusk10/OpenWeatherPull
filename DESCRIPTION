@@ -3,9 +3,6 @@ Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
 Author: Alex Hallam
-Authors@R: c(
-    person("Alex", "Hallam", , "alexhallam6.28@gmail.com", role = c("aut", "cre")
-    )
 Maintainer: The package maintainer <ahallam@InspireBrands.com>
 Description: This package performs a simple data pull by city id.
 License: MIT
