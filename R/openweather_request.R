@@ -31,14 +31,21 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
 
   #validate_endpoint(endpoint)
   query_list <- list(...)
+  path <- query_list$path
+  query_list$path <- NULL
+  #openweather_args <- NULL
+  #query_list <- NULL
+  #openweather_args$id <- "4684888"
   #query_list$id <- openweather_args$id
   query_list$APPID <- Sys.getenv("OPENWEATHER_API_KEY")
 
   resp <- httr::GET(
     url = "http://api.openweathermap.org/",
-    path = "data/2.5/forecast",
+    #path = "data/2.5/weather",
+    path = path,
     query = query_list
   )
+
 
   if(resp$status_code != 200){
     err <- httr::content(rep)
@@ -52,7 +59,15 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   if (to_frame) {
   parsed <- jsonlite::fromJSON(httr::content(resp, "text"))
   frame <- tibble::as_tibble()
-  frame <- cbind(list(date_time = lubridate::ymd_hms(c(parsed$list$dt_txt))),parsed$list$main,parsed$list$clouds,parsed$list$wind,parsed$list$rain,purrr::flatten(parsed$city),pull_key = Sys.Date())
+  if (path == "data/2.5/forecast") {
+    frame <- cbind(list(date_time = lubridate::ymd_hms(c(parsed$list$dt_txt))),parsed$list$main,parsed$list$clouds,parsed$list$wind,parsed$list$rain,purrr::flatten(parsed$city),pull_key = Sys.Date())
+  }
+  else if(path == "data/2.5/weather"){
+    frame <- as.data.frame(c(list(date_time_utc = parsed$dt), parsed$main,parsed$clouds,parsed$wind,list(city_name = parsed$name),parsed$coord,list(visibility = parsed$visibility),list(cod = parsed$cod),list(parsed_id = parsed$id),parsed$sys,list(pull_key = Sys.Date())))
+    frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
+    frame$sunrise <- lubridate::as_datetime(frame$sunrise)
+    frame$sunset <- lubridate::as_datetime(frame$sunset)
+  }
   return(frame)
 
   }else{

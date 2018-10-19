@@ -3,7 +3,11 @@
 #' Given the City ID, return observations of the series as a `tibble` object.
 #' `openweather` is an alieas for `openweather_series_observations()`.
 #'
-#' @param series_id A string ID fore the Open Weather series. _Required parameter_.
+#' @param id A string ID for the Open Weather series. _Required parameter_.
+#'
+#' @param type A string ID for the type of weather data to pull.  _Required parameter_.
+#' * `"today"` for current days weather
+#' * `"forecast"` for the 5 day forecast
 #'
 #' @param aggregation_method A string representing the aggregation method
 #' used for frequency aggregation. This parameter has no affect is `frequency`
@@ -32,6 +36,7 @@
 #' @return A `tibble` object with observation dates and values.
 
 openweather_series_observations <- function(id = NULL,
+                        type = NULL,
                         aggregation_method = NULL,
                         limit = NULL,
                         sort_order = NULL,
@@ -55,7 +60,19 @@ openweather_series_observations <- function(id = NULL,
     id = id
   )
 
-  frame <- do.call(openweather_request, c(openweather_args
+  if (type == "today") {
+    path <- "weather"
+  }else{
+    path <- "forecast"
+  }
+
+  path_args <- NULL
+  path_args <- list(
+    path = paste0("data/2.5/",path)
+  )
+
+  frame <- do.call(openweather_request, c(openweather_args,
+                                          path_args
                                           #, user_args
                                           ))
 
