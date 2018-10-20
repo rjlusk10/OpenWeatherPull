@@ -7,7 +7,12 @@
 #'
 #' @param type A string ID for the type of weather data to pull.  _Required parameter_.
 #' * `"today"` for current days weather
-#' * `"forecast"` for the 5 day forecast
+#' * `"forecast"` for the 14 day forecast
+#'
+#' @param units
+#' * `"i"` Imperial: Fahrenheit for temperature and miles/hour for wind speed
+#' * `"k"` Default: Kelvin for temp and meter/sec for wind speed _Default_
+#' * `"m"` Metric: Celsius for temp and meter/sec for wind speed
 #'
 #' @param aggregation_method A string representing the aggregation method
 #' used for frequency aggregation. This parameter has no affect is `frequency`
@@ -22,11 +27,6 @@
 #' @param sort_order A string representing the order of the resulting series.
 #' Possible values are: `"asc"` (default), and `"desc"`.
 #'
-#' @param units A string indicating the data value transformation.
-#' Defaults to `"F"`. Possible values are:
-#'
-#' * `"C"` for Celcius
-#'
 #' @param realtime_start A `Date` indicating the start of the real-time period.
 #' Defaults to today's date.
 #'
@@ -37,10 +37,11 @@
 
 openweather_series_observations <- function(id = NULL,
                         type = NULL,
+                        cnt = NULL,
+                        units = NULL,
                         aggregation_method = NULL,
                         limit = NULL,
                         sort_order = NULL,
-                        units = NULL,
                         realtime_start = NULL,
                         realtime_end = NULL){
 
@@ -60,15 +61,27 @@ openweather_series_observations <- function(id = NULL,
     id = id
   )
 
+  # conditional statements for the forecast horizon
   if (type == "today") {
     path <- "weather"
   }else{
-    path <- "forecast"
+    path <- "forecast/daily"
+  }
+
+  # conditional statements for the units
+  if(units == "i"){
+    units <- "imperial"
+  }else if(units == "m"){
+    units <- "metric"
+  }else{
+    units <- NULL
   }
 
   path_args <- NULL
   path_args <- list(
-    path = paste0("data/2.5/",path)
+    path = paste0("data/2.5/", path),
+    cnt = cnt,
+    units = units
   )
 
   frame <- do.call(openweather_request, c(openweather_args,

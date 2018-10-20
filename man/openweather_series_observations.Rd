@@ -4,11 +4,21 @@
 \alias{openweather_series_observations}
 \title{Get observations of a Open Weather Map Series}
 \usage{
-openweather_series_observations(id = NULL, aggregation_method = NULL,
-  limit = NULL, sort_order = NULL, units = NULL, realtime_start = NULL,
-  realtime_end = NULL)
+openweather_series_observations(id = NULL, type = NULL, cnt = NULL,
+  units = NULL, aggregation_method = NULL, limit = NULL,
+  sort_order = NULL, realtime_start = NULL, realtime_end = NULL)
 }
 \arguments{
+\item{id}{A string ID for the Open Weather series. _Required parameter_.}
+
+\item{type}{A string ID for the type of weather data to pull.  _Required parameter_.
+* `"today"` for current days weather
+* `"forecast"` for the 14 day forecast}
+
+\item{units}{* `"i"` Imperial: Fahrenheit for temperature and miles/hour for wind speed
+* `"k"` Default: Kelvin for temp and meter/sec for wind speed _Default_
+* `"m"` Metric: Celsius for temp and meter/sec for wind speed}
+
 \item{aggregation_method}{A string representing the aggregation method
 used for frequency aggregation. This parameter has no affect is `frequency`
 is not set. Possible values are:
@@ -22,18 +32,11 @@ Defaults to `100000`, the maximum.}
 \item{sort_order}{A string representing the order of the resulting series.
 Possible values are: `"asc"` (default), and `"desc"`.}
 
-\item{units}{A string indicating the data value transformation.
-Defaults to `"F"`. Possible values are:
-
-* `"C"` for Celcius}
-
 \item{realtime_start}{A `Date` indicating the start of the real-time period.
 Defaults to today's date.}
 
 \item{realtime_end}{A `Date` indicating the end of the real-time period.
 Defaults to today's date.}
-
-\item{series_id}{A string ID fore the Open Weather series. _Required parameter_.}
 }
 \value{
 A `tibble` object with observation dates and values.

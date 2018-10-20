@@ -21,8 +21,9 @@
 #' @section API Documentation:
 #'
 #' [Open Weather Map API](https://openweathermap.org/api)
-
-
+#'
+#' @rdname openweather_request
+#' @export
 openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
 
   if (identical(Sys.getenv("OPENWEATHER_API_KEY"), "")) {
@@ -59,8 +60,23 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   if (to_frame) {
   parsed <- jsonlite::fromJSON(httr::content(resp, "text"))
   frame <- tibble::as_tibble()
+  # 3-hour forecasts
   if (path == "data/2.5/forecast") {
-    frame <- cbind(list(date_time = lubridate::ymd_hms(c(parsed$list$dt_txt))),parsed$list$main,parsed$list$clouds,parsed$list$wind,parsed$list$rain,purrr::flatten(parsed$city),pull_key = Sys.Date())
+    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
+                   list(date_time_utc = parsed$list$dt),parsed$list$main,as.list(parsed$list$clouds),parsed$list$wind, as.list(parsed$list$sys), parsed$list$rain,
+                   list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
+    frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
+    frame$clouds <- frame$all
+    frame$all <- NULL
+  }
+  # daily 14 day forecasts - THIS IS THE MAIN FUNCTION
+  else if(path == "data/2.5/forecast/daily"){
+    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
+                   list(date_time_utc = parsed$list$dt), parsed$list$temp, list(clouds = parsed$list$clouds),list(rain = parsed$list$rain),
+                   list(deg = parsed$list$deg), list(speed = parsed$list$speed), rename(do.call(rbind,parsed$list$weather), weather_id = id),
+                   list(humidity = parsed$list$humidity), list(pressure = parsed$list$pressure),
+                   list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
+    frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
   }
   else if(path == "data/2.5/weather"){
     frame <- as.data.frame(c(list(date_time_utc = parsed$dt), parsed$main,parsed$clouds,parsed$wind,list(city_name = parsed$name),parsed$coord,list(visibility = parsed$visibility),list(cod = parsed$cod),list(parsed_id = parsed$id),parsed$sys,list(pull_key = Sys.Date())))
