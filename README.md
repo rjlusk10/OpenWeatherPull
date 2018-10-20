@@ -20,7 +20,6 @@ This is a basic example which shows you how to solve a common problem:
 ``` r
 devtools::install_github("alexhallam/OpenWeatherPull")
 openweather_set_key("my_api_key") # use API key provided by Open Weather Map
-OpenWeatherPull::openweather_set_key("00f88d86ed066ceaa7643014690cd89f")
 weather_data <- openweather(id = "5074472", type = "today", units = "i")
 weather_data
 ```
