@@ -72,7 +72,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   # daily 14 day forecasts - THIS IS THE MAIN FUNCTION
   else if(path == "data/2.5/forecast/daily"){
     frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
-                   list(date_time_utc = parsed$list$dt), parsed$list$temp, list(clouds = parsed$list$clouds),list(rain = parsed$list$rain),
+                   list(date_time_utc = parsed$list$dt), parsed$list$temp, list(clouds = parsed$list$clouds),
+		   list(rain = ifelse(is.null(parsed$list$rain), 0, parsed$list$rain)),
                    list(deg = parsed$list$deg), list(speed = parsed$list$speed), rename(do.call(rbind,parsed$list$weather), weather_id = id),
                    list(humidity = parsed$list$humidity), list(pressure = parsed$list$pressure),
                    list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
