@@ -62,7 +62,7 @@ id <- c("4560349","4464368","4180439","4188377","4861716","5263058",
 type <- rep("today",length(cities))
 cnt <- rep(14,length(cities)) # not used but error is thrown without it. Fix in next release
 units <- rep("i",length(cities))
-pmap_dfr(list(id, type, cnt, units), openweather) #all is clouds.all = Cloudiness, %
+pmap_dfr(list(id, type, cnt, units), openweather)  #all is clouds.all = Cloudiness, %
 ```
 
 ## Forecast -- Requires paid API key
