@@ -79,6 +79,7 @@ openweather_series_observations <- function(id = NULL,
 
   # cnt conditional - current weather does not use cnt, so should not be neccesary
   cnt_value <- cnt 
+  cnt_value <- NULL
     if(!is.null(cnt)){
     cnt_value = cnt
     }
