@@ -77,10 +77,16 @@ openweather_series_observations <- function(id = NULL,
     units <- NULL
   }
 
+  # cnt conditional - current weather does not use cnt, so should not be neccesary
+  cnt_value <- NULL
+    if(!is.null(cnt)){
+    cnt_value = cnt
+    }
+
   path_args <- NULL
   path_args <- list(
     path = paste0("data/2.5/", path),
-    cnt = cnt,
+    cnt = cnt_value,
     units = units
   )
 
