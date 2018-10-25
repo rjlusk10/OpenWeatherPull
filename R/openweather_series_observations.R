@@ -64,9 +64,12 @@ openweather_series_observations <- function(id = NULL,
   # conditional statements for the forecast horizon
   if (type == "today") {
     path <- "weather"
-  }else{
+  }else if(type == "forecast"){
     path <- "forecast/daily"
+  }else if(type == "forecast3h"){
+    path <- "forecast"
   }
+
 
   # conditional statements for the units
   if(units == "i"){
