@@ -68,6 +68,8 @@ openweather_series_observations <- function(id = NULL,
     path <- "forecast/daily"
   }else if(type == "forecast3h"){
     path <- "forecast"
+  }else{
+    path <- "forecast/daily"
   }
 
 
