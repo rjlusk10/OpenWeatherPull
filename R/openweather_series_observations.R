@@ -64,9 +64,14 @@ openweather_series_observations <- function(id = NULL,
   # conditional statements for the forecast horizon
   if (type == "today") {
     path <- "weather"
+  }else if(type == "forecast"){
+    path <- "forecast/daily"
+  }else if(type == "forecast3h"){
+    path <- "forecast"
   }else{
     path <- "forecast/daily"
   }
+
 
   # conditional statements for the units
   if(units == "i"){
@@ -77,10 +82,17 @@ openweather_series_observations <- function(id = NULL,
     units <- NULL
   }
 
+  # cnt conditional - current weather does not use cnt, so should not be neccesary
+  cnt_value <- cnt 
+  cnt_value <- NULL
+    if(!is.null(cnt)){
+    cnt_value = cnt
+    }
+
   path_args <- NULL
   path_args <- list(
     path = paste0("data/2.5/", path),
-    cnt = cnt,
+    cnt = cnt_value,
     units = units
   )
 

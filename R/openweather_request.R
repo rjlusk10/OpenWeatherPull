@@ -63,7 +63,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   # 3-hour forecasts
   if (path == "data/2.5/forecast") {
     frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
-                   list(date_time_utc = parsed$list$dt),parsed$list$main,as.list(parsed$list$clouds),parsed$list$wind, as.list(parsed$list$sys), parsed$list$rain,
+                   list(date_time_utc = parsed$list$dt),parsed$list$main,as.list(parsed$list$clouds),parsed$list$wind, as.list(parsed$list$sys), 
+		   list(rain = ifelse(is.null(parsed$list$rain), NA, parsed$list$rain)),
                    list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
     frame$clouds <- frame$all
