@@ -62,8 +62,13 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   frame <- tibble::as_tibble()
   # 3-hour forecasts
   if (path == "data/2.5/forecast") {
-    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
-                   list(date_time_utc = parsed$list$dt),parsed$list$main,as.list(parsed$list$clouds),parsed$list$wind, as.list(parsed$list$sys), 
+    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,
+		   list(country = parsed$city$country),list(city = parsed$city$name),
+                   list(date_time_utc = parsed$list$dt),parsed$list$main,
+		   purrr::map_dfr(parsed$list$weather, rbind),
+		   as.list(parsed$list$clouds),
+		   parsed$list$wind, 
+		   as.list(parsed$list$sys), 
 		   list(rain = ifelse(is.null(parsed$list$rain) || dim(parsed$list$rain)[2] == 0, NA, parsed$list$rain)[[1]]),
                    list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
