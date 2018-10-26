@@ -62,7 +62,7 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   frame <- tibble::as_tibble()
   # 3-hour forecasts
   if (path == "data/2.5/forecast") {
-    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,
+    frame <- cbind(list(city_id = parsed$city$id),parsed$city$coord,
 		   list(country = parsed$city$country),list(city = parsed$city$name),
                    list(date_time_utc = parsed$list$dt),parsed$list$main,
 		   purrr::map_dfr(parsed$list$weather, rbind),
@@ -77,7 +77,7 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
   }
   # daily 14 day forecasts - THIS IS THE MAIN FUNCTION
   else if(path == "data/2.5/forecast/daily"){
-    frame <- cbind(list(id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
+    frame <- cbind(list(city_id = parsed$city$id),parsed$city$coord,list(country = parsed$city$country),list(city = parsed$city$name),
                    list(date_time_utc = parsed$list$dt), parsed$list$temp, list(clouds = parsed$list$clouds),
 		   list(rain = ifelse(is.null(parsed$list$rain), NA, parsed$list$rain)),
                    list(deg = parsed$list$deg), list(speed = parsed$list$speed), rename(do.call(rbind,parsed$list$weather), weather_id = id),
