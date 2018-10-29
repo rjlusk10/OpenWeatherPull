@@ -98,8 +98,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
                             # parsed$sys,
 			     list(pull_key = Sys.Date())))
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
-    frame$sunrise <- lubridate::as_datetime(frame$sunrise)
-    frame$sunset <- lubridate::as_datetime(frame$sunset)
+    #frame$sunrise <- lubridate::as_datetime(frame$sunrise)
+    #frame$sunset <- lubridate::as_datetime(frame$sunset)
   }
   return(frame)
 
