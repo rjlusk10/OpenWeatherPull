@@ -67,8 +67,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
                    list(date_time_utc = parsed$list$dt),parsed$list$main,
 		   purrr::map_dfr(parsed$list$weather, rbind),
 		   as.list(parsed$list$clouds),
-		   parsed$list$wind, 
-		   as.list(parsed$list$sys), 
+		   parsed$list$wind,
+		   as.list(parsed$list$sys),
 		   list(rain = ifelse(is.null(parsed$list$rain) || dim(parsed$list$rain)[2] == 0, NA, parsed$list$rain)[[1]]),
                    list(cnt = parsed$cnt),list(message = parsed$message),list(cod = parsed$cod),pull_key = Sys.Date())
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
@@ -86,9 +86,16 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
   }
   else if(path == "data/2.5/weather"){
-    frame <- as.data.frame(c(list(date_time_utc = parsed$dt), parsed$main,parsed$clouds,parsed$wind,list(city_name = parsed$name),parsed$coord,
-			     list(visibility = ifelse(is.null(parsed$visibility), NA, parsed$visibility)),
-			     list(cod = parsed$cod),list(parsed_id = parsed$id),parsed$sys,list(pull_key = Sys.Date())))
+    frame <- as.data.frame(c(list(date_time_utc = parsed$dt),
+                             parsed$main,parsed$clouds,
+                             parsed$wind,
+                             parsed$weather,
+                             list(city_name = parsed$name),
+                             parsed$coord,
+                             list(visibility = ifelse(is.null(parsed$visibility), NA, parsed$visibility)),
+                             list(cod = parsed$cod),
+                             list(parsed_id = parsed$id),
+                             parsed$sys,list(pull_key = Sys.Date())))
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
     frame$sunrise <- lubridate::as_datetime(frame$sunrise)
     frame$sunset <- lubridate::as_datetime(frame$sunset)
