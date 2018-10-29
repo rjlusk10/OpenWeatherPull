@@ -95,7 +95,8 @@ openweather_request <- function(..., to_frame = TRUE, print_req = FALSE){
                              list(visibility = ifelse(is.null(parsed$visibility), NA, parsed$visibility)),
                              list(cod = parsed$cod),
                              list(parsed_id = parsed$id),
-                             parsed$sys,list(pull_key = Sys.Date())))
+                            # parsed$sys,
+			     list(pull_key = Sys.Date())))
     frame$date_time_utc <- lubridate::as_datetime(frame$date_time_utc)
     frame$sunrise <- lubridate::as_datetime(frame$sunrise)
     frame$sunset <- lubridate::as_datetime(frame$sunset)
