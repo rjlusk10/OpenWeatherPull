@@ -8,6 +8,7 @@
 #' @param type A string ID for the type of weather data to pull.  _Required parameter_.
 #' * `"today"` for current days weather
 #' * `"forecast"` for the 14 day forecast
+#' * `"forecast3h"` forcast at 3 hour intervales.
 #'
 #' @param units
 #' * `"i"` Imperial: Fahrenheit for temperature and miles/hour for wind speed
@@ -34,7 +35,7 @@
 #' Defaults to today's date.
 #'
 #' @return A `tibble` object with observation dates and values.
-
+#' @export
 openweather_series_observations <- function(id = NULL,
                         type = NULL,
                         cnt = NULL,
@@ -45,17 +46,6 @@ openweather_series_observations <- function(id = NULL,
                         realtime_start = NULL,
                         realtime_end = NULL){
 
-  #validate_series_id(series_id)
-
-  # validation.R
- # user_args <- capture_args(
- #   aggregation_method,
- #   limit,
- #   sort_order,
- #   units,
- #   realtime_start,
- #   realtime_end
- # )
   openweather_args <- NULL
   openweather_args <- list(
     id = id
@@ -72,7 +62,6 @@ openweather_series_observations <- function(id = NULL,
     path <- "forecast/daily"
   }
 
-
   # conditional statements for the units
   if(units == "i"){
     units <- "imperial"
@@ -83,7 +72,7 @@ openweather_series_observations <- function(id = NULL,
   }
 
   # cnt conditional - current weather does not use cnt, so should not be neccesary
-  cnt_value <- cnt 
+  cnt_value <- cnt
   cnt_value <- NULL
     if(!is.null(cnt)){
     cnt_value = cnt
@@ -98,30 +87,17 @@ openweather_series_observations <- function(id = NULL,
 
   frame <- do.call(openweather_request, c(openweather_args,
                                           path_args
-                                          #, user_args
-                                          ))
-
-  #if(NROW(frame) == 0) {
-  #  return(empty_fredr_tibble())
-  #}
-
-
-  #frame$value[frame$value == "."] <- NA
+                                          )
+                   )
 
   obs <- tibble::as_tibble(
-  #  date = as.Date(frame$date, "%Y-%m-%d"),
-    #id = id,
-    #value = frame
     frame
   )
-
   return(obs)
-
-
 }
 
-#' @rdname openweather
+#' @rdname openweather_series_observations
+#' @aliases openweather
 #' @export
 openweather <- openweather_series_observations
-
 

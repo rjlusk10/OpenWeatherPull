@@ -2,4 +2,5 @@
 
 export(openweather)
 export(openweather_request)
+export(openweather_series_observations)
 export(openweather_set_key)

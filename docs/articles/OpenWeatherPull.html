@@ -81,7 +81,7 @@
 <li>
 <code><a href="../reference/openweather_set_key.html">openweather_set_key("my_api_key")</a></code> - Set the required Open Weather Map API key for the session.</li>
 <li>
-<code>openweather()</code> - Fetch the weather data.</li>
+<code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> - Fetch the weather data.</li>
 <li>
 <code><a href="../reference/openweather_request.html">openweather_request()</a></code> - Send a general request to the Open Weather Map API.</li>
 </ul>
@@ -98,48 +98,43 @@
 <h2 class="hasAnchor">
 <a href="#authentication" class="anchor"></a>Authentication</h2>
 <p>To use <code>OpenWeatherPull</code>, you must first <a href="https://openweathermap.org/api">obtain a Open Weather Pull API key</a>. Once you’ve obtained an API key, you can set the key as an environment variable using <code>openweather_set_key</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/openweather_set_key.html">openweather_set_key</a></span>(<span class="st">"abcdefghijklmnopqrstuvwxyz123456"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/openweather_set_key.html">openweather_set_key</a></span>(<span class="st">"abcdefghijklmnopqrstuvwxyz123456"</span>) <span class="co"># use API key provided by Open Weather Map</span></a></code></pre></div>
 <p>where “abcdefghijklmnopqrstuvwxyz123456” is replaced with the actual key you obtain from Open Weather Map. This will set the key for the current session.</p>
 </div>
 <div id="retrieve-series-observations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#retrieve-series-observations" class="anchor"></a>Retrieve series observations</h2>
-</div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p>It is best practice to keep your API key hidden. We use the <a href="https://github.com/r-lib/keyring"><code>keyring</code></a> package, but there are many <a href="https://db.rstudio.com/best-practices/managing-credentials/">other options described here</a>.</p>
+<p>The <code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> function requires an <code>id</code> the city id, <code>type</code> today, or forecast, <code>units</code></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"alexhallam/OpenWeatherPull"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/openweather_set_key.html">openweather_set_key</a></span>(<span class="st">"my_api_key"</span>) <span class="co"># use API key provided by Open Weather Map</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">weather_data &lt;-<span class="st"> </span><span class="kw">openweather</span>(<span class="dt">id =</span> <span class="st">"5074472"</span>, <span class="dt">type =</span> <span class="st">"today"</span>, <span class="dt">units =</span> <span class="st">"i"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">weather_data</a></code></pre></div>
-<p>If you have subscribed for the 16 day forecast API you may also run the following</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">openweather</span>(<span class="dt">id =</span> <span class="st">"4560349"</span>, <span class="dt">type =</span> <span class="st">"forecast"</span>, <span class="dt">cnt =</span> <span class="dv">14</span>, <span class="dt">units =</span> <span class="st">"i"</span>)</a></code></pre></div>
-<p><code>OpenWeatherPull</code> plays nicely with tidyverse functions such as <code>pmap_dfr</code>:</p>
+<a class="sourceLine" id="cb4-2" data-line-number="2">keyring<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/keyring/topics/key_get">key_set</a></span>(<span class="st">"openweather_map"</span>) <span class="co"># store API key securely provided by Open Weather Map</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/openweather_set_key.html">openweather_set_key</a></span>(keyring<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/keyring/topics/key_get">key_get</a></span>(<span class="st">"openweather_map"</span>)) <span class="co"># use key_set("openweather_map") to store </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">weather_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather</a></span>(<span class="dt">id =</span> <span class="st">"5074472"</span>,  <span class="co"># city id</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">                            <span class="dt">type =</span> <span class="st">"today"</span>,  <span class="co"># for current day's weather </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">                            <span class="dt">units =</span> <span class="st">"i"</span>      <span class="co"># Imperial untis. </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                            )</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">weather_data</a></code></pre></div>
+<p>If you have subscribed for the paid 16 day forecast API you may also request data for future days with the below code.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather</a></span>(<span class="dt">id =</span> <span class="st">"4560349"</span>, <span class="dt">type =</span> <span class="st">"forecast"</span>, <span class="dt">cnt =</span> <span class="dv">10</span>, <span class="dt">units =</span> <span class="st">"i"</span>)</a></code></pre></div>
+<p>To know what the columns of this dataframe represent we encourage users to <a href="https://openweathermap.org/forecast16">look at the official Open Weather Map API</a>.</p>
 </div>
-<div id="current-weather" class="section level2">
+<div id="working-with-tidyverse-functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#current-weather" class="anchor"></a>Current Weather</h2>
+<a href="#working-with-tidyverse-functions" class="anchor"></a>Working with Tidyverse Functions</h2>
+<p><code>OpenWeatherPull</code> plays nicely with tidyverse functions. We give an example of using <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr()</a></code>:</p>
+<p>If we wanted the current weather for 21 cities, as opposed to writing a <code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> function for each request we can pass all of the parameters to <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(purrr)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># a sample set of cities for current weather data</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"4560349"</span>,<span class="st">"4464368"</span>,<span class="st">"4180439"</span>,<span class="st">"4188377"</span>,<span class="st">"4861716"</span>,<span class="st">"5263058"</span>,</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">            <span class="st">"4257227"</span>,<span class="st">"4644585"</span>,<span class="st">"4335045"</span>, <span class="st">"4887398"</span>,<span class="st">"5037649"</span>,<span class="st">"4850751"</span>,</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">            <span class="st">"4281730"</span>,<span class="st">"4553433"</span>,<span class="st">"5074472"</span>,<span class="st">"4684888"</span>,<span class="st">"5454711"</span>,<span class="st">"5780993"</span>,</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">            <span class="st">"5506956"</span>,<span class="st">"5391959"</span>,<span class="st">"5308655"</span>,<span class="st">"5809844"</span>,<span class="st">"4393217"</span>,<span class="st">"4544349"</span>,<span class="st">"4699066"</span>,<span class="st">"5344994"</span>)</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">type &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"today"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities))</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">cnt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">14</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities)) <span class="co"># not used but error is thrown without it. Fix in next release</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">units &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"i"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities))</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(id, type, cnt, units), openweather) <span class="co">#all is clouds.all = Cloudiness, %</span></a></code></pre></div>
-</div>
-<div id="forecast-requires-paid-api-key" class="section level2">
-<h2 class="hasAnchor">
-<a href="#forecast-requires-paid-api-key" class="anchor"></a>Forecast – Requires paid API key</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># a sample set of cities for forecast data</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">type &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"forecast"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities))</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">cnt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">14</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities))</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">units &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"i"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(cities))</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(id, type, cnt, units), openweather)</a></code></pre></div>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># a sample set of cities for current weather data</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">city_ids &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"4560349"</span>,<span class="st">"4464368"</span>,<span class="st">"4180439"</span>,<span class="st">"4188377"</span>,<span class="st">"4861716"</span>,<span class="st">"5263058"</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">            <span class="st">"4257227"</span>,<span class="st">"4644585"</span>,<span class="st">"4335045"</span>, <span class="st">"4887398"</span>,<span class="st">"5037649"</span>,<span class="st">"4850751"</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">            <span class="st">"4281730"</span>,<span class="st">"4553433"</span>,<span class="st">"5074472"</span>,<span class="st">"4684888"</span>,<span class="st">"5454711"</span>,<span class="st">"5780993"</span>,</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">            <span class="st">"5506956"</span>,<span class="st">"5391959"</span>,<span class="st">"5308655"</span>,<span class="st">"5809844"</span>,<span class="st">"4393217"</span>,<span class="st">"4544349"</span>,<span class="st">"4699066"</span>,<span class="st">"5344994"</span>)</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">type &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"today"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(city_ids))</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">cnt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">14</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(city_ids)) <span class="co"># not used but error is thrown without it. Fix in next release</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">units &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="st">"i"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(city_ids))</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="kw"><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(id, type, cnt, units), openweather) <span class="co">#all is clouds.all = Cloudiness, %</span></a></code></pre></div>
 </div>
 </div>
   </div>
@@ -154,9 +149,7 @@
 <li><a href="#installation">Installation</a></li>
       <li><a href="#authentication">Authentication</a></li>
       <li><a href="#retrieve-series-observations">Retrieve series observations</a></li>
-      <li><a href="#example">Example</a></li>
-      <li><a href="#current-weather">Current Weather</a></li>
-      <li><a href="#forecast-requires-paid-api-key">Forecast – Requires paid API key</a></li>
+      <li><a href="#working-with-tidyverse-functions">Working with Tidyverse Functions</a></li>
       </ul>
 </li>
       </ul>
