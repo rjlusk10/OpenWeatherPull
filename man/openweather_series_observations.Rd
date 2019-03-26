@@ -2,18 +2,24 @@
 % Please edit documentation in R/openweather_series_observations.R
 \name{openweather_series_observations}
 \alias{openweather_series_observations}
+\alias{openweather}
 \title{Get observations of a Open Weather Map Series}
 \usage{
 openweather_series_observations(id = NULL, type = NULL, cnt = NULL,
   units = NULL, aggregation_method = NULL, limit = NULL,
   sort_order = NULL, realtime_start = NULL, realtime_end = NULL)
+
+openweather(id = NULL, type = NULL, cnt = NULL, units = NULL,
+  aggregation_method = NULL, limit = NULL, sort_order = NULL,
+  realtime_start = NULL, realtime_end = NULL)
 }
 \arguments{
 \item{id}{A string ID for the Open Weather series. _Required parameter_.}
 
 \item{type}{A string ID for the type of weather data to pull.  _Required parameter_.
 * `"today"` for current days weather
-* `"forecast"` for the 14 day forecast}
+* `"forecast"` for the 14 day forecast
+* `"forecast3h"` forcast at 3 hour intervales.}
 
 \item{units}{* `"i"` Imperial: Fahrenheit for temperature and miles/hour for wind speed
 * `"k"` Default: Kelvin for temp and meter/sec for wind speed _Default_
