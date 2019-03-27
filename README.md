@@ -2,13 +2,16 @@
 OpenWeatherPull
 ===============
 
-OpenWeatherPull provides a set of R bindings to the Open Weather Map API, provided by Open Weather Map. The functions allow the user to fetch time series observations. The core functions are
+OpenWeatherPull provides a set of R bindings to the [Open Weather Map API](https://openweathermap.org/). 
+The functions allow the user to fetch time series weather observations. The core functions are
 
-    openweather_set_key() - Set the required API key for the session.
+```r
+openweather_set_key() - Set the required API key for the session.
 
-    openweather() or openweather_series_observations() - Fetch a series.
+openweather() or openweather_series_observations() - Fetch a series.
 
-    openweather_request() - Send a general request to the API.
+openweather_request() - Send a general request to the API.
+```
 
 Objects are returned as tibbles.
 
@@ -22,5 +25,5 @@ devtools::install_github("alexhallam/OpenWeatherPull")
 Usage
 -----
 
-See the Getting Started article
+See the [Getting Started](https://alexhallam.github.io/OpenWeatherPull/articles/OpenWeatherPull.html) article
 

@@ -81,7 +81,7 @@
 <li>
 <code><a href="../reference/openweather_set_key.html">openweather_set_key("my_api_key")</a></code> - Set the required Open Weather Map API key for the session.</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> - Fetch the weather data.</li>
+<code><a href="../reference/openweather_series_observations.html">openweather()</a></code> - Fetch the weather data.</li>
 <li>
 <code><a href="../reference/openweather_request.html">openweather_request()</a></code> - Send a general request to the Open Weather Map API.</li>
 </ul>
@@ -105,24 +105,24 @@
 <h2 class="hasAnchor">
 <a href="#retrieve-series-observations" class="anchor"></a>Retrieve series observations</h2>
 <p>It is best practice to keep your API key hidden. We use the <a href="https://github.com/r-lib/keyring"><code>keyring</code></a> package, but there are many <a href="https://db.rstudio.com/best-practices/managing-credentials/">other options described here</a>.</p>
-<p>The <code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> function requires an <code>id</code> the city id, <code>type</code> today, or forecast, <code>units</code></p>
+<p>The <code><a href="../reference/openweather_series_observations.html">openweather()</a></code> function requires an <code>id</code> the city id, <code>type</code> today, or forecast, <code>units</code></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"alexhallam/OpenWeatherPull"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">keyring<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/keyring/topics/key_get">key_set</a></span>(<span class="st">"openweather_map"</span>) <span class="co"># store API key securely provided by Open Weather Map</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/openweather_set_key.html">openweather_set_key</a></span>(keyring<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/keyring/topics/key_get">key_get</a></span>(<span class="st">"openweather_map"</span>)) <span class="co"># use key_set("openweather_map") to store </span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">weather_data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather</a></span>(<span class="dt">id =</span> <span class="st">"5074472"</span>,  <span class="co"># city id</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">weather_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/openweather_series_observations.html">openweather</a></span>(<span class="dt">id =</span> <span class="st">"5074472"</span>,  <span class="co"># city id</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">                            <span class="dt">type =</span> <span class="st">"today"</span>,  <span class="co"># for current day's weather </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">                            <span class="dt">units =</span> <span class="st">"i"</span>      <span class="co"># Imperial untis. </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">                            )</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">weather_data</a></code></pre></div>
 <p>If you have subscribed for the paid 16 day forecast API you may also request data for future days with the below code.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather</a></span>(<span class="dt">id =</span> <span class="st">"4560349"</span>, <span class="dt">type =</span> <span class="st">"forecast"</span>, <span class="dt">cnt =</span> <span class="dv">10</span>, <span class="dt">units =</span> <span class="st">"i"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/openweather_series_observations.html">openweather</a></span>(<span class="dt">id =</span> <span class="st">"4560349"</span>, <span class="dt">type =</span> <span class="st">"forecast"</span>, <span class="dt">cnt =</span> <span class="dv">10</span>, <span class="dt">units =</span> <span class="st">"i"</span>)</a></code></pre></div>
 <p>To know what the columns of this dataframe represent we encourage users to <a href="https://openweathermap.org/forecast16">look at the official Open Weather Map API</a>.</p>
 </div>
 <div id="working-with-tidyverse-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#working-with-tidyverse-functions" class="anchor"></a>Working with Tidyverse Functions</h2>
 <p><code>OpenWeatherPull</code> plays nicely with tidyverse functions. We give an example of using <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr()</a></code>:</p>
-<p>If we wanted the current weather for 21 cities, as opposed to writing a <code><a href="https://www.rdocumentation.org/packages/OpenWeatherPull/topics/openweather_series_observations">openweather()</a></code> function for each request we can pass all of the parameters to <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr()</a></code>:</p>
+<p>If we wanted the current weather for 21 cities, as opposed to writing a <code><a href="../reference/openweather_series_observations.html">openweather()</a></code> function for each request we can pass all of the parameters to <code><a href="https://purrr.tidyverse.org/reference/map2.html">pmap_dfr()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(purrr)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
